@@ -10,19 +10,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.SkillExchange.repository.BaseUserRepository;
 import com.SkillExchange.repository.UserRepository;
-import com.SkillExchange.model.User;
+import com.SkillExchange.model.BaseUser;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private BaseUserRepository baseuserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Fetch the user by email from the database
-        User user = userRepository.findByEmail(email)
+        BaseUser user = baseuserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         // Ensure email and password are valid

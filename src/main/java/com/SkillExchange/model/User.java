@@ -1,47 +1,38 @@
 package com.SkillExchange.model;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import org.springframework.data.annotation.Id;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "users")
+import com.SkillExchange.model.BaseUser.Role;
+
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    @Id
-    private String id;   // MongoDB uses String ObjectId by default
-
-    private String name;
-
-    @Indexed(unique = true)
+@Document(collection = "users")
+public class User extends BaseUser {
     private String username;
-
-    @Indexed(unique = true)
-    private String email;
-
-    private String password;
     private String profilePic;
     private String bio;
     private String location;
     private String timezone;
 
-    private List<String> languages; // can store multiple
-
+    private List<String> languages; 
     private int karmaPoints = 0;
     private double trustScore = 0.0;
-    private Role role = Role.USER;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime lastLogin;
-
-    public enum Role { USER, ADMIN }
+    private List<String> skills;
+    private Avaliability avaliable = Avaliability.FLEXIBLE;
+    
+    public enum Avaliability { FLEXIBLE, WEEKDAYS, WEEKENDS,EVENINGS}
+    public User(BaseUser baseUser) {
+        // Copy fields from BaseUser
+        this.setId(baseUser.getId());
+        this.setName(baseUser.getName());
+        this.setEmail(baseUser.getEmail());
+        this.setPassword(baseUser.getPassword());
+        this.setRole(baseUser.getRole());
+    }
 }
